@@ -1,5 +1,6 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:startup_namer/SavedSuggestions.dart';
 
 import 'RandomWords.dart';
 
@@ -55,26 +56,11 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   void _pushSaved() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          final tiles = _saved.map(
-            (WordPair pair) {
-              return ListTile(
-                title: Text(pair.asPascalCase, style: _biggerFont),
-              );
-            },
-          );
-          final divided =
-              ListTile.divideTiles(context: context, tiles: tiles).toList();
+    final Scaffold Function(BuildContext) builder =
+    SavedSuggestions().create(_saved, _biggerFont);
 
-          return Scaffold(
-              appBar: AppBar(
-                title: Text('Saved Suggestions'),
-              ),
-              body: ListView(children: divided));
-        },
-      ),
+    Navigator.of(context).push(
+    MaterialPageRoute<void>(builder: builder),
     );
   }
 }
